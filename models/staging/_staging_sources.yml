@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: ecommerce
+    description: "Raw E-commerce transaction data"
+    database: ANALYTICS_DB # Assuming the same DB as TPC-H, or user-defined
+    schema: RAW
+    tables:
+      - name: E_COMMERCE_DATA
+        description: "Original sales records from the e-commerce store"
+        columns:
+          - name: InvoiceNo
+            description: "Invoice number"
+            tests:
+              - not_null
+          - name: CustomerID
+            description: "Unique customer ID"
