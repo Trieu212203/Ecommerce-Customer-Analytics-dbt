@@ -10,18 +10,16 @@ with date_range as (
 
 date_spine as (
     select
-        dateadd(day, seq4(), start_date) as date_key
-    from date_range,
-        table(generator(rowcount => 2000))
-    where dateadd(day, seq4(), start_date) <= end_date
+        generate_series(start_date, end_date, interval '1 day')::date as date_key
+    from date_range
 )
 
 select
     date_key,
-    year(date_key)          as year,
-    quarter(date_key)       as quarter,
-    month(date_key)         as month,
-    day(date_key)           as day,
-    dayname(date_key)       as day_name,
-    monthname(date_key)     as month_name
+    extract(year from date_key)::int      as year,
+    extract(quarter from date_key)::int   as quarter,
+    extract(month from date_key)::int     as month,
+    extract(day from date_key)::int       as day,
+    to_char(date_key, 'Day')              as day_name,
+    to_char(date_key, 'Month')            as month_name
 from date_spine

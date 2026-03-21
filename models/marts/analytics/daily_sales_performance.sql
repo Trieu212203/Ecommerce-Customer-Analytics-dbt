@@ -9,7 +9,7 @@ daily_metrics as (
         date_key,
         count(distinct invoice_no)  as order_count,
         count(distinct customer_id) as customer_count,
-        sum(total_revenue)          as daily_revenue,
+        sum(revenue)                as daily_revenue,
         sum(quantity)               as total_quantity
     from fact_sales
     group by 1

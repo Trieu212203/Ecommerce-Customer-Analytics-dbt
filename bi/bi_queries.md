@@ -9,11 +9,11 @@ Use these SQL queries to connect your BI tools to the data models in Snowflake.
 SELECT 
     rfm_segment,
     customer_count,
-    total_revenue,
+    revenue,
     avg_order_value,
     total_quantity
 FROM ANALYTICS_DB.MARTS.customer_segment_metrics
-ORDER BY total_revenue DESC;
+ORDER BY revenue DESC;
 ```
 
 ## 2. Daily Sales Trends
@@ -38,10 +38,10 @@ SELECT
     stock_code,
     description,
     SUM(quantity) as total_quantity,
-    SUM(total_revenue) as total_revenue
+    SUM(revenue) as revenue
 FROM ANALYTICS_DB.MARTS.fact_sales
 GROUP BY 1, 2
-ORDER BY total_revenue DESC
+ORDER BY revenue DESC
 LIMIT 20;
 ```
 
@@ -52,8 +52,8 @@ LIMIT 20;
 SELECT 
     country,
     COUNT(DISTINCT invoice_no) as total_orders,
-    SUM(total_revenue) as total_revenue
+    SUM(revenue) as revenue
 FROM ANALYTICS_DB.STAGING.stg_ecommerce__orders
 GROUP BY 1
-ORDER BY total_revenue DESC;
+ORDER BY revenue DESC;
 ```

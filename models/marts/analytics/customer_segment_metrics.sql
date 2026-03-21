@@ -12,8 +12,8 @@ segment_metrics as (
     select
         c.rfm_segment,
         count(distinct c.customer_id)           as customer_count,
-        sum(f.total_revenue)                    as total_revenue,
-        avg(f.total_revenue)                    as avg_order_value,
+        sum(f.revenue)                          as revenue,
+        avg(f.revenue)                          as avg_order_value,
         sum(f.quantity)                         as total_quantity
     from customers c
     left join fact_sales f
@@ -22,4 +22,4 @@ segment_metrics as (
 )
 
 select * from segment_metrics
-order by total_revenue desc
+order by revenue desc

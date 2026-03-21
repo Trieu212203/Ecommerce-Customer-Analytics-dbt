@@ -17,5 +17,5 @@ RAW (E-Commerce_Data)  →  STAGING (stg_ecommerce__orders)  →  MARTS CORE (di
 
 ## Key Metrics
 - **RFM Segmentation**: Champions, Loyal, At Risk, General.
-- **Revenue**: Total revenue calculated as Quantity * UnitPrice.
+- **Revenue**: Calculated as `Quantity * UnitPrice`.
 - **Fulfillment**: Order counts and daily revenue growth.
