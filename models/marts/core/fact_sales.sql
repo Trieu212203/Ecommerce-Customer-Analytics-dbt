@@ -2,7 +2,7 @@
 -- Grain: one row per line item
 with sales as (
     select *
-    from { { ref('stg_ecommerce__orders') } }
+    from {{ ref('stg_ecommerce__orders') }}
 )
 select invoice_no,
     invoice_date::date as date_key,

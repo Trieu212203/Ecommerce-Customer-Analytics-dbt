@@ -8,9 +8,9 @@ sources:
       - name: e_commerce_data
         description: "Original sales records from the e-commerce store"
         columns:
-          - name: InvoiceNo
+          - name: invoice_no
             description: "Invoice number"
             tests:
               - not_null
-          - name: CustomerID
+          - name: customer_id
             description: "Unique customer ID"

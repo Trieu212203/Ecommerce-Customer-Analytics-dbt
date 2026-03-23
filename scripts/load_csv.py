@@ -1,13 +1,11 @@
 """
-Load E-Commerce CSV data into PostgreSQL.
-Usage: python scripts/load_csv.py
+Load E-Commerce CSV data into PostgreSQL using bulk insert.
+Optimized with COPY FROM STDIN for maximum performance.
 """
 
-import csv
 import psycopg2
 import os
 
-# Database connection
 DB_CONFIG = {
     "host": "localhost",
     "port": 5432,
@@ -24,63 +22,44 @@ def main():
     conn.autocommit = True
     cur = conn.cursor()
 
-    # Create raw schema
+    # Create schema
     print("Creating schema 'raw'...")
     cur.execute("CREATE SCHEMA IF NOT EXISTS raw;")
 
-    # Create table
+    # Recreate table (CASCADE để tránh lỗi dependency)
+    # Using VARCHAR(50) to allow ELT fast loading without data casting issues in python
     print("Creating table 'raw.e_commerce_data'...")
-    cur.execute("DROP TABLE IF EXISTS raw.e_commerce_data;")
+    cur.execute("DROP TABLE IF EXISTS raw.e_commerce_data CASCADE;")
     cur.execute("""
         CREATE TABLE raw.e_commerce_data (
-            "InvoiceNo"   VARCHAR(50),
-            "StockCode"   VARCHAR(50),
-            "Description" TEXT,
-            "Quantity"     INTEGER,
-            "InvoiceDate" VARCHAR(50),
-            "UnitPrice"   NUMERIC(10, 2),
-            "CustomerID"  VARCHAR(50),
-            "Country"     VARCHAR(100)
+            invoice_no   VARCHAR(50),
+            stock_code   VARCHAR(50),
+            description  TEXT,
+            quantity     VARCHAR(50),
+            invoice_date VARCHAR(50),
+            unit_price   VARCHAR(50),
+            customer_id  VARCHAR(50),
+            country      VARCHAR(100)
         );
     """)
 
-    # Load CSV
-    print(f"Loading CSV from: {os.path.abspath(CSV_PATH)}")
+    # Load CSV with fast COPY
+    abs_csv_path = os.path.abspath(CSV_PATH)
+    print(f"Loading CSV from: {abs_csv_path}")
+
+    # copy_expert uses the native COPY FROM STDIN which is magnitudes faster
     with open(CSV_PATH, "r", encoding="ISO-8859-1") as f:
-        reader = csv.reader(f)
-        header = next(reader)  # skip header
-        print(f"Columns: {header}")
+        copy_sql = """
+            COPY raw.e_commerce_data(invoice_no, stock_code, description, quantity, invoice_date, unit_price, customer_id, country)
+            FROM STDIN WITH CSV HEADER DELIMITER ','
+        """
+        cur.copy_expert(sql=copy_sql, file=f)
 
-        count = 0
-        for row in reader:
-            try:
-                # Handle empty CustomerID
-                customer_id = row[6] if row[6].strip() else None
-                # Handle empty Quantity/UnitPrice
-                quantity = int(row[3]) if row[3].strip() else 0
-                unit_price = float(row[5]) if row[5].strip() else 0.0
-
-                cur.execute(
-                    """
-                    INSERT INTO raw.e_commerce_data
-                    ("InvoiceNo", "StockCode", "Description", "Quantity",
-                     "InvoiceDate", "UnitPrice", "CustomerID", "Country")
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-                    """,
-                    (row[0], row[1], row[2], quantity, row[4], unit_price, customer_id, row[7]),
-                )
-                count += 1
-                if count % 50000 == 0:
-                    print(f"  Loaded {count:,} rows...")
-            except Exception as e:
-                print(f"Error on row {count+1}: {row}")
-                raise e
-
-    print(f"\n✅ Done! Loaded {count:,} rows into raw.e_commerce_data")
+    print("CSV loaded successfully via COPY command.")
 
     # Verify
     cur.execute("SELECT COUNT(*) FROM raw.e_commerce_data;")
-    print(f"   Verified row count: {cur.fetchone()[0]:,}")
+    print(f"Verified row count: {cur.fetchone()[0]:,}")
 
     cur.close()
     conn.close()

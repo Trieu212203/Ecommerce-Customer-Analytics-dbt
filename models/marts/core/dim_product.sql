@@ -7,7 +7,7 @@ with products as (
             partition by stock_code
             order by invoice_date desc
         ) as rn
-    from { { ref('stg_ecommerce__orders') } }
+    from {{ ref('stg_ecommerce__orders') }}
     where stock_code is not null
 )
 select stock_code,
