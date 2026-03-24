@@ -77,17 +77,13 @@ graph LR
 
 ## 📊 Entity Relationship Diagram (ERD)
 
-*(Chú ý: Để thay thế hình dưới đây, bạn chỉ cần copy hình ảnh ERD của bạn vào thư mục dự án và cập nhật lại đường dẫn file ảnh trong file markdown này)*
 
 ### 1. Core Data Model (Star Schema)
-> Thêm hình ảnh thiết kế Fact/Dim của bạn ở đây.
 
-![ERD - Core Models Placeholder](https://via.placeholder.com/800x400.png?text=Insert+Core+ERD+Image+Here)
+
 
 ### 2. Analytics Marts
-> Thêm hình ảnh mô hình các bảng phục vụ Dashboard ở đây.
 
-![ERD - Analytics Placeholder](https://via.placeholder.com/800x400.png?text=Insert+Analytics+ERD+Image+Here)
 
 ---
 
@@ -95,4 +91,4 @@ graph LR
 
 For a detailed step-by-step guide on how to launch the PostgreSQL database, ingest raw CSV files, and run the `dbt` pipeline, please refer to the dedicated run guide below:
 
-👉 **[Xem Hướng Dẫn Chạy Project (RUN_GUIDE.md)](RUN_GUIDE.md)**
+👉 **(RUN_GUIDE.md)(RUN_GUIDE.md)**
