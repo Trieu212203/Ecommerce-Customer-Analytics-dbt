@@ -26,7 +26,7 @@ def main():
     print("Creating schema 'raw'...")
     cur.execute("CREATE SCHEMA IF NOT EXISTS raw;")
 
-    # Recreate table (CASCADE để tránh lỗi dependency)
+    # Recreate table 
     # Using VARCHAR(50) to allow ELT fast loading without data casting issues in python
     print("Creating table 'raw.e_commerce_data'...")
     cur.execute("DROP TABLE IF EXISTS raw.e_commerce_data CASCADE;")
