@@ -5,3 +5,7 @@ logs/
 profiles.yml
 *.pdf
 *.duckdb
+
+# Virtual Environment
+.venv/
+venv/
