@@ -100,21 +100,7 @@ graph LR
     class F,G mart;
 ```
 
----
-
-## 📊 Entity Relationship Diagram (ERD)
-
-
-### 1. Core Data Model (Star Schema)
-
-
-
-### 2. Analytics Marts
-
-
----
-
-## 🚀 Quick Start & Run Guide
+## Run guide
 
 For a detailed step-by-step guide on how to launch the PostgreSQL database, ingest raw CSV files, and run the `dbt` pipeline, please refer to the dedicated run guide below:
 
