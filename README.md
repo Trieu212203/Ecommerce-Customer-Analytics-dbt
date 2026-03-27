@@ -21,7 +21,7 @@ Ecommerce-Customer-Analytics-dbt/
 │       └── analytics/              # Gold layer (pre-aggregated)
 │           ├── customer_segment_metrics.sql
 │           └── daily_sales_performance.sql
-├── bi/                  # Business Intelligence setups (Metabase)
+├── bi/                  # Business Intelligence
 ├── data/                # Raw CSV data files
 ├── scripts/             # Python scripts for data ingestion
 ├── dbt_project.yml      # dbt project configuration
