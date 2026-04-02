@@ -5,6 +5,7 @@ logs/
 profiles.yml
 *.pdf
 data/
+script/__pycache__
 
 # Virtual Environment
 .venv/
