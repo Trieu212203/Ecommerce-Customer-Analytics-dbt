@@ -4,7 +4,7 @@ logs/
 .user.yml
 profiles.yml
 *.pdf
-data/raw
+data/
 
 # Virtual Environment
 .venv/
