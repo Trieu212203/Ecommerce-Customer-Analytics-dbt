@@ -10,7 +10,7 @@ Ecommerce-Customer-Analytics-dbt/
 ├── models/
 │   ├── staging/                    # Silver layer (clean & standardize)
 │   │   ├── _staging_sources.yml    # Source definitions + tests
-│   │   └── stg_ecommerce__orders.sql
+│   │   └── stg_online_retail__orders.sql
 │   └── marts/
 │       ├── core/                   # Gold layer (star schema)
 │       │   ├── dim_country.sql
@@ -42,14 +42,14 @@ We strictly follow the **Medallion Architecture** to guarantee data quality and 
 ### 🥈 Silver Layer (Staging & Cleansing)
 - **Location**: `models/staging/`
 - **Role**: Standardize, cast data types, handle missing/null values, and rename columns to standardize conventions. 
-- **Models**: Includes `stg_ecommerce__orders` which converts the raw `VARCHAR` data into proper `integer`, `numeric`, and `timestamp` fields natively in PostgreSQL.
+- **Models**: Includes `stg_online_retail__orders` which converts the raw `VARCHAR` data into proper `integer`, `numeric`, and `timestamp` fields natively in PostgreSQL.
 
 ### 🥇 Gold Layer (Core Models & Analytics Marts)
 - **Location**: `models/marts/`
-- **Role**: Houses the business logic and final aggregated metrics ready for BI tools (like Metabase, Power BI, Tableau).
+- **Role**: Houses the business logic and final aggregated metrics ready for BI tools (like Power BI).
 - **Sub-layers**:
   - **Core (`models/marts/core/`)**: Dimensional modeling (Entities/Facts) including `dim_customer` (with RFM logic embedded), `dim_date`, and `fact_sales`.
-  - **Analytics (`models/marts/analytics/`)**: Pre-calculated metrics such as `customer_segment_metrics` and `daily_sales_performance`.
+  - **Analytics (`models/marts/analytics/`)**: Pre-calculated metrics such as `customer_segment_metrics`, `daily_sales_performance`, `product_performance_metrics`, and `geographic_sales_metrics`.
 
 ---
 
@@ -61,12 +61,12 @@ The flow of data through our dbt models is mapped below.
 graph LR
     %% Bronze
     subgraph Bronze [RAW Layer]
-        A[(raw.e_commerce_data)]
+        A[(raw.online_retail_data)]
     end
 
     %% Silver
     subgraph Silver [STAGING Layer]
-        B[[stg_ecommerce__orders]]
+        B[[stg_online_retail__orders]]
         A --> B
     end
 
@@ -84,10 +84,14 @@ graph LR
     subgraph Gold_Analytics [MARTS - Analytics]
         F[[customer_segment_metrics]]
         G[[daily_sales_performance]]
+        H[[product_performance_metrics]]
+        I[[geographic_sales_metrics]]
         C --> F
         E --> F
         D --> G
         E --> G
+        E --> H
+        B --> I
     end
 
     classDef raw fill:#cd7f32,stroke:#333,stroke-width:2px,color:#fff;
