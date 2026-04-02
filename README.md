@@ -22,7 +22,7 @@ Ecommerce-Customer-Analytics-dbt/
 │           ├── customer_segment_metrics.sql
 │           └── daily_sales_performance.sql
 ├── bi/                  # Business Intelligence
-├── data/                # Raw CSV data files
+├── data/                
 │   └──  raw/ # Raw CSV data files
 ├── scripts/             # Python scripts for data ingestion
 ├── dbt_project.yml      # dbt project configuration
