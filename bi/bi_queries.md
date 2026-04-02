@@ -12,7 +12,7 @@ SELECT
     revenue,
     avg_order_value,
     total_quantity
-FROM ANALYTICS_DB.MARTS.customer_segment_metrics
+FROM customer_segment_metrics
 ORDER BY revenue DESC;
 ```
 
@@ -26,7 +26,7 @@ SELECT
     customer_count,
     daily_revenue,
     total_quantity
-FROM ANALYTICS_DB.MARTS.daily_sales_performance
+FROM daily_sales_performance
 ORDER BY date_key ASC;
 ```
 
@@ -37,11 +37,11 @@ ORDER BY date_key ASC;
 SELECT 
     stock_code,
     description,
-    SUM(quantity) as total_quantity,
-    SUM(revenue) as revenue
-FROM ANALYTICS_DB.MARTS.fact_sales
-GROUP BY 1, 2
-ORDER BY revenue DESC
+    total_quantity,
+    total_revenue,
+    order_count
+FROM product_performance_metrics
+ORDER BY total_revenue DESC
 LIMIT 20;
 ```
 
@@ -51,9 +51,9 @@ LIMIT 20;
 ```sql
 SELECT 
     country,
-    COUNT(DISTINCT invoice_no) as total_orders,
-    SUM(revenue) as revenue
-FROM ANALYTICS_DB.STAGING.stg_ecommerce__orders
-GROUP BY 1
-ORDER BY revenue DESC;
+    total_orders,
+    total_customers,
+    total_revenue
+FROM geographic_sales_metrics
+ORDER BY total_revenue DESC;
 ```
