@@ -23,10 +23,10 @@ Ecommerce-Customer-Analytics-dbt/
 │           └── daily_sales_performance.sql
 ├── bi/                  # Business Intelligence
 ├── data/                # Raw CSV data files
+│   └──  raw/ # Raw CSV data files
 ├── scripts/             # Python scripts for data ingestion
 ├── dbt_project.yml      # dbt project configuration
-├── docker-compose.yml   # Docker services (Postgres, Metabase)
-└── profiles.yml         # dbt connection profile
+├── docker-compose.yml   # Docker services (Postgres)
 ```
 
 ---
