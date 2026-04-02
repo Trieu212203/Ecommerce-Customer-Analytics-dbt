@@ -27,10 +27,10 @@ def main():
 
     # Recreate table 
     # Using VARCHAR(50) to allow ELT fast loading without data casting issues in python
-    print("Creating table 'raw.online_retail_II'...")
-    cur.execute("DROP TABLE IF EXISTS raw.online_retail_II CASCADE;")
+    print("Creating table 'raw.online_retail_data'...")
+    cur.execute("DROP TABLE IF EXISTS raw.online_retail_data CASCADE;")
     cur.execute("""
-        CREATE TABLE raw.e_commerce_data (
+        CREATE TABLE raw.online_retail_data (
             invoice_no   VARCHAR(50),
             stock_code   VARCHAR(50),
             description  TEXT,
@@ -49,7 +49,7 @@ def main():
     # copy_expert uses the native COPY FROM STDIN which is magnitudes faster
     with open(CSV_PATH, "r", encoding="ISO-8859-1") as f:
         copy_sql = """
-            COPY raw.e_commerce_data(invoice_no, stock_code, description, quantity, invoice_date, unit_price, customer_id, country)
+            COPY raw.online_retail_data(invoice_no, stock_code, description, quantity, invoice_date, unit_price, customer_id, country)
             FROM STDIN WITH CSV HEADER DELIMITER ','
         """
         cur.copy_expert(sql=copy_sql, file=f)
@@ -57,7 +57,7 @@ def main():
     print("CSV loaded successfully via COPY command.")
 
     # Verify
-    cur.execute("SELECT COUNT(*) FROM raw.online_retail_II;")
+    cur.execute("SELECT COUNT(*) FROM raw.online_retail_data;")
     print(f"Verified row count: {cur.fetchone()[0]:,}")
 
     cur.close()
