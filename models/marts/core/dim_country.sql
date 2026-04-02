@@ -3,7 +3,7 @@
 
 with countries as (
     select distinct country
-    from {{ ref('stg_ecommerce__orders') }}
+    from {{ ref('stg_online_retail__orders') }}
     where country is not null
 )
 

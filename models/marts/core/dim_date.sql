@@ -5,7 +5,7 @@ with date_range as (
     select
         min(invoice_date::date) as start_date,
         max(invoice_date::date) as end_date
-    from {{ ref('stg_ecommerce__orders') }}
+    from {{ ref('stg_online_retail__orders') }}
 ),
 
 date_spine as (

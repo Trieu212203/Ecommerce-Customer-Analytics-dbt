@@ -2,7 +2,7 @@
 -- Based on Python logic from src/etl.py
 
 with orders as (
-    select * from {{ ref('stg_ecommerce__orders') }}
+    select * from {{ ref('stg_online_retail__orders') }}
 ),
 
 today_logic as (
