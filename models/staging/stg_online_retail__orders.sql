@@ -11,7 +11,7 @@ clean_source as (
         "stock_code"                                     as stock_code,
         "description"                                    as description,
         cast(nullif("quantity", '') as integer)          as quantity,
-        to_timestamp("invoice_date", 'MM/DD/YYYY HH24:MI') as invoice_date,
+        "invoice_date"::timestamp as invoice_date,
         cast(nullif("unit_price", '') as numeric)        as unit_price,
         "customer_id"                                    as customer_id,
         "country"                                        as country
