@@ -1,6 +1,4 @@
 -- dim_customer: RFM Analysis and Segmentation
--- Based on Python logic from src/etl.py
-
 with orders as (
     select * from {{ ref('stg_online_retail__orders') }}
 ),
