@@ -11,5 +11,6 @@ select invoice_no,
     description,
     quantity,
     unit_price,
-    revenue
+    revenue,
+    country
 from sales
