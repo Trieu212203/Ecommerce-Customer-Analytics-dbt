@@ -1,98 +1,91 @@
-The pipeline transforms raw transactional data into a structured data warehouse using **dbt** and **PostgreSQL**, and delivers business-ready datasets for visualization in Power BI.
+# 🛒 E-Commerce Customer Analytics
 
-### 🎯 Key Objectives
-- Segment customers using RFM analysis (Recency, Frequency, Monetary)
-- Track revenue trends and sales performance over time
-- Identify high-value and at-risk customers
+End-to-end data pipeline for analyzing e-commerce transactions and customer behavior using **dbt** and **PostgreSQL**, delivering business-ready data for Power BI dashboards.
 
 ---
 
-## 🏗️ Data Pipeline Architecture
+## 🎯 Objectives
 
-Raw CSV → Python (EDA & Ingestion) → PostgreSQL → dbt (Staging → Mart) → Power BI Dashboard
+* Customer segmentation using RFM (Recency, Frequency, Monetary)
+* Revenue and sales trend analysis
+* Identify high-value and at-risk customers
 
 ---
 
-## 📂 Repository Structure
+## 🏗️ Architecture
 
-```text
-Ecommerce-Customer-Analytics-dbt/
-├── models/
-│   ├── staging/                    
-│   │   ├── _staging_sources.yml    
-│   │   └── stg_online_retail__orders.sql
-│   └── marts/
-│       ├── core/                   
-│       │   ├── dim_country.sql
-│       │   ├── dim_customer.sql
-│       │   ├── dim_date.sql
-│       │   ├── dim_product.sql
-│       │   └── fact_sales.sql
-│       └── analytics/              
-│           ├── customer_segment_metrics.sql
-│           └── daily_sales_performance.sql
-├── bi/                  
-├── data/                
-│   └── raw/             
-├── scripts/             
-├── dbt_project.yml      
-├── docker-compose.yml
+Raw CSV → Python → PostgreSQL → dbt (Staging → Mart) → Power BI
 
+---
+
+## 📊 Data Modeling
+
+**Star Schema**
+
+* **fact_sales** – transactional data (order-line level)
+* **dim_customer** – customer + RFM segmentation
+* **dim_product**, **dim_date**, **dim_country**
+
+**Analytics Tables**
+
+* `customer_segment_metrics`
+* `daily_sales_performance`
+* `product_performance_metrics`
+* `geographic_sales_metrics`
+
+> Optimized for direct use in BI tools.
+
+---
+
+## 🏛️ Data Layers (Medallion)
+
+* **Bronze**: Raw CSV → PostgreSQL (`raw`)
+* **Silver**: Clean & standardize (`stg_online_retail__orders`)
+* **Gold**: Star schema + business metrics (`marts`)
+
+---
+
+## 🔗 Data Lineage
+
+```mermaid
+graph LR
+A[raw] --> B[stg_orders]
+B --> C[dim_customer]
+B --> D[dim_date]
+B --> E[fact_sales]
+E --> F[analytics tables]
 ```
-🏛 Data Architecture (Medallion Approach)
 
-The project follows the Medallion Architecture to ensure data quality and clear separation of transformation layers.
+---
 
-🥉 Bronze Layer (Raw Data)
-Raw transactional CSV files ingested into PostgreSQL
-Data is loaded using high-performance COPY commands
-Schema: raw
-🥈 Silver Layer (Staging & Cleansing)
-Standardize column names and data types
-Handle null values and data inconsistencies
-Model: stg_online_retail__orders
-🥇 Gold Layer (Data Mart)
-Core Models (Star Schema)
-fact_sales – transactional sales data (grain: order line)
-dim_customer – customer attributes + RFM segmentation
-dim_product – product details
-dim_date – calendar dimension
-dim_country – geographic dimension
-Analytics Models (Business-ready)
-customer_segment_metrics – customer distribution by segment
-daily_sales_performance – revenue trends over time
-product_performance_metrics – product-level performance
-geographic_sales_metrics – revenue by country
+## 📊 Dashboard (Power BI)
 
-These models are optimized for direct consumption in BI tools without additional transformation.
+*In progress*
 
-🔗 Data Lineage
-📊 Dashboard (Power BI)
+Planned:
 
-The interactive dashboard is currently under development.
+* Revenue trends
+* RFM segmentation
+* Top customers
+* Sales by country
 
-It will include:
+---
 
-Revenue trends over time
-Customer segmentation (RFM)
-Top customers by revenue
-Geographic sales distribution
+## 💡 Insights
 
-📌 Dashboard screenshots and .pbix file will be added in the next update.
+Planned:
 
-💡 Key Insights
+* Customer segmentation behavior
+* Revenue contribution by segments
+* Seasonal trends
 
-Insights will be updated after completing the Power BI dashboard.
+---
 
-Planned analysis includes:
+## 🚀 Run
 
-Customer segmentation behavior (RFM)
-Revenue contribution by customer groups
-Seasonal sales trends
-Identification of high-value and at-risk customers
-🚧 Project Status
-✅ Data ingestion (Python + PostgreSQL)
-✅ Data transformation (dbt)
-✅ Data modeling (Star schema)
-🚧 Dashboard development (Power BI)
-⏳ Business insights & reporting
+```bash
+docker-compose up -d
+dbt run
+```
+
+👉 Full guide: [Run Guide](./RUN_GUIDE.md)
