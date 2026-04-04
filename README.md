@@ -1,6 +1,16 @@
-# 🛒 E-Commerce Customer Analytics (dbt Pipeline)
+The pipeline transforms raw transactional data into a structured data warehouse using **dbt** and **PostgreSQL**, and delivers business-ready datasets for visualization in Power BI.
 
-This project provides a robust, production-ready data transformation pipeline for e-commerce transaction data using **dbt** (data build tool) and **PostgreSQL**. The pipeline extracts insights on sales performance and analyzes customer behavior through RFM (Recency, Frequency, Monetary) segmentation.
+### 🎯 Key Objectives
+- Segment customers using RFM analysis (Recency, Frequency, Monetary)
+- Track revenue trends and sales performance over time
+- Identify high-value and at-risk customers
+
+---
+
+## 🏗️ Data Pipeline Architecture
+
+Raw CSV → Python (EDA & Ingestion) → PostgreSQL → dbt (Staging → Mart) → Power BI Dashboard
+
 ---
 
 ## 📂 Repository Structure
@@ -8,104 +18,81 @@ This project provides a robust, production-ready data transformation pipeline fo
 ```text
 Ecommerce-Customer-Analytics-dbt/
 ├── models/
-│   ├── staging/                    # Silver layer (clean & standardize)
-│   │   ├── _staging_sources.yml    # Source definitions + tests
+│   ├── staging/                    
+│   │   ├── _staging_sources.yml    
 │   │   └── stg_online_retail__orders.sql
 │   └── marts/
-│       ├── core/                   # Gold layer (star schema)
+│       ├── core/                   
 │       │   ├── dim_country.sql
 │       │   ├── dim_customer.sql
 │       │   ├── dim_date.sql
 │       │   ├── dim_product.sql
 │       │   └── fact_sales.sql
-│       └── analytics/              # Gold layer (pre-aggregated)
+│       └── analytics/              
 │           ├── customer_segment_metrics.sql
 │           └── daily_sales_performance.sql
-├── bi/                  # Business Intelligence
+├── bi/                  
 ├── data/                
-│   └──  raw/ # Raw CSV data files
-├── scripts/             # Python scripts for data ingestion
-├── dbt_project.yml      # dbt project configuration
-├── docker-compose.yml   # Docker services (Postgres)
+│   └── raw/             
+├── scripts/             
+├── dbt_project.yml      
+├── docker-compose.yml
+
 ```
+🏛 Data Architecture (Medallion Approach)
 
----
+The project follows the Medallion Architecture to ensure data quality and clear separation of transformation layers.
 
-## 🏛 Data Architecture (Medallion Approach)
+🥉 Bronze Layer (Raw Data)
+Raw transactional CSV files ingested into PostgreSQL
+Data is loaded using high-performance COPY commands
+Schema: raw
+🥈 Silver Layer (Staging & Cleansing)
+Standardize column names and data types
+Handle null values and data inconsistencies
+Model: stg_online_retail__orders
+🥇 Gold Layer (Data Mart)
+Core Models (Star Schema)
+fact_sales – transactional sales data (grain: order line)
+dim_customer – customer attributes + RFM segmentation
+dim_product – product details
+dim_date – calendar dimension
+dim_country – geographic dimension
+Analytics Models (Business-ready)
+customer_segment_metrics – customer distribution by segment
+daily_sales_performance – revenue trends over time
+product_performance_metrics – product-level performance
+geographic_sales_metrics – revenue by country
 
-We strictly follow the **Medallion Architecture** to guarantee data quality and logical separation of transformations.
+These models are optimized for direct consumption in BI tools without additional transformation.
 
-### 🥉 Bronze Layer (Raw Data)
-- **Source**: E-commerce transactional CSV files.
-- **Role**: Data is ingested *as-is* without any alterations into the `raw` schema in PostgreSQL via high-speed `COPY` commands (`scripts/load_csv.py`). All data columns are mapped as `VARCHAR` to prioritize load performance and prevent ingestion failures.
+🔗 Data Lineage
+📊 Dashboard (Power BI)
 
-### 🥈 Silver Layer (Staging & Cleansing)
-- **Location**: `models/staging/`
-- **Role**: Standardize, cast data types, handle missing/null values, and rename columns to standardize conventions. 
-- **Models**: Includes `stg_online_retail__orders` which converts the raw `VARCHAR` data into proper `integer`, `numeric`, and `timestamp` fields natively in PostgreSQL.
+The interactive dashboard is currently under development.
 
-### 🥇 Gold Layer (Core Models & Analytics Marts)
-- **Location**: `models/marts/`
-- **Role**: Houses the business logic and final aggregated metrics ready for BI tools (like Power BI).
-- **Sub-layers**:
-  - **Core (`models/marts/core/`)**: Dimensional modeling (Entities/Facts) including `dim_customer` (with RFM logic embedded), `dim_date`, and `fact_sales`.
-  - **Analytics (`models/marts/analytics/`)**: Pre-calculated metrics such as `customer_segment_metrics`, `daily_sales_performance`, `product_performance_metrics`, and `geographic_sales_metrics`.
+It will include:
 
----
+Revenue trends over time
+Customer segmentation (RFM)
+Top customers by revenue
+Geographic sales distribution
 
-## 🔗 Data Lineage
+📌 Dashboard screenshots and .pbix file will be added in the next update.
 
-The flow of data through our dbt models is mapped below.
+💡 Key Insights
 
-```mermaid
-graph LR
-    %% Bronze
-    subgraph Bronze [RAW Layer]
-        A[(raw.online_retail_data)]
-    end
+Insights will be updated after completing the Power BI dashboard.
 
-    %% Silver
-    subgraph Silver [STAGING Layer]
-        B[[stg_online_retail__orders]]
-        A --> B
-    end
+Planned analysis includes:
 
-    %% Gold Core
-    subgraph Gold_Core [MARTS - Core]
-        C[[dim_customer]]
-        D[[dim_date]]
-        E[[fact_sales]]
-        B --> C
-        B --> D
-        B --> E
-    end
-
-    %% Gold Analytics
-    subgraph Gold_Analytics [MARTS - Analytics]
-        F[[customer_segment_metrics]]
-        G[[daily_sales_performance]]
-        H[[product_performance_metrics]]
-        I[[geographic_sales_metrics]]
-        C --> F
-        E --> F
-        D --> G
-        E --> G
-        E --> H
-        B --> I
-    end
-
-    classDef raw fill:#cd7f32,stroke:#333,stroke-width:2px,color:#fff;
-    classDef stg fill:#c0c0c0,stroke:#333,stroke-width:2px,color:#111;
-    classDef mart fill:#ffd700,stroke:#333,stroke-width:2px,color:#111;
-
-    class A raw;
-    class B stg;
-    class C,D,E mart;
-    class F,G mart;
-```
-
-## Run guide
-
-For a detailed step-by-step guide on how to launch the PostgreSQL database, ingest raw CSV files, and run the `dbt` pipeline, please refer to the dedicated run guide below:
-
-👉 **(RUN_GUIDE.md)(RUN_GUIDE.md)**
+Customer segmentation behavior (RFM)
+Revenue contribution by customer groups
+Seasonal sales trends
+Identification of high-value and at-risk customers
+🚧 Project Status
+✅ Data ingestion (Python + PostgreSQL)
+✅ Data transformation (dbt)
+✅ Data modeling (Star schema)
+🚧 Dashboard development (Power BI)
+⏳ Business insights & reporting
