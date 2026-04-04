@@ -49,11 +49,72 @@ Raw CSV → Python → PostgreSQL → dbt (Staging → Mart) → Power BI
 
 ```mermaid
 graph LR
-A[raw] --> B[stg_orders]
-B --> C[dim_customer]
-B --> D[dim_date]
-B --> E[fact_sales]
-E --> F[analytics tables]
+    %% ======================
+    %% Bronze Layer
+    %% ======================
+    subgraph Bronze [RAW Layer]
+        A[(raw.online_retail_data)]
+    end
+
+    %% ======================
+    %% Silver Layer
+    %% ======================
+    subgraph Silver [STAGING Layer]
+        B[[stg_online_retail__orders]]
+        A --> B
+    end
+
+    %% ======================
+    %% Gold - Core
+    %% ======================
+    subgraph Gold_Core [MARTS - Core]
+        C[[dim_customer]]
+        D[[dim_date]]
+        E[[dim_product]]
+        F[[dim_country]]
+        G[[fact_sales]]
+
+        B --> C
+        B --> D
+        B --> E
+        B --> F
+        B --> G
+    end
+
+    %% ======================
+    %% Gold - Analytics
+    %% ======================
+    subgraph Gold_Analytics [MARTS - Analytics]
+        H[[customer_segment_mtrcs ]]
+        I[[monthly_sales_performance ]]
+        J[[product_performance_mtrcs]]
+        K[[geographic_sales_mtrcs ]]
+
+        %% dependencies
+        C --> H
+        G --> H
+
+        D --> I
+        G --> I
+
+        E --> J
+        G --> J
+
+        F --> K
+        G --> K
+    end
+
+    %% ======================
+    %% Styling
+    %% ======================
+    classDef raw fill:#cd7f32,stroke:#333,stroke-width:2px,color:#fff;
+    classDef stg fill:#c0c0c0,stroke:#333,stroke-width:2px,color:#111;
+    classDef mart fill:#ffd700,stroke:#333,stroke-width:2px,color:#111;
+
+    class A raw;
+    class B stg;
+    class C,D,E,F,G mart;
+    class H,I,J,K mart;
 ```
 
 ---
@@ -81,11 +142,3 @@ Planned:
 
 ---
 
-## 🚀 Run
-
-```bash
-docker-compose up -d
-dbt run
-```
-
-👉 Full guide: [Run Guide](./RUN_GUIDE.md)
