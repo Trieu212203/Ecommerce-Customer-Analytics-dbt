@@ -44,6 +44,34 @@ Raw CSV → Python → PostgreSQL → dbt (Staging → Mart) → Power BI
 * **Gold**: Star schema + business metrics (`marts`)
 
 ---
+## Architecture
+
+text
+```
+Ecommerce-Customer-Analytics-dbt/
+├── models/
+│   ├── staging/                    # Silver layer (clean & standardize)
+│   │   ├── _staging_sources.yml    # Source definitions + tests
+│   │   └── stg_online_retail__orders.sql
+│   └── marts/
+│       ├── core/                   # Gold layer (star schema)
+│       │   ├── dim_country.sql
+│       │   ├── dim_customer.sql
+│       │   ├── dim_date.sql
+│       │   ├── dim_product.sql
+│       │   └── fact_sales.sql
+│       └── analytics/              # Gold layer (pre-aggregated)
+│           ├── customer_segment_metrics.sql
+│           └── monthly_sales_performance.sql
+│           └── geographic_sales_metrics.sql
+│           └── product_performance.sql
+├── bi/                  # Business Intelligence
+├── data/                # Raw CSV data files
+│   └──  raw/ # Raw CSV data files
+├── scripts/             # Python scripts for data ingestion
+├── dbt_project.yml      # dbt project configuration
+├── docker-compose.yml   # Docker services (Postgres)
+```
 
 ## 🔗 Data Lineage
 
