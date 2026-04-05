@@ -65,6 +65,9 @@ Ecommerce-Customer-Analytics-dbt/
 │           └── monthly_sales_performance.sql
 │           └── geographic_sales_metrics.sql
 │           └── product_performance.sql
+├── notebooks/
+│   ├── 01.raw_data_exploration.ipynb
+│   └── 02.data_quality.ipynb
 ├── bi/                  # Business Intelligence
 ├── data/                # Raw CSV data files
 │   └──  raw/ # Raw CSV data files
