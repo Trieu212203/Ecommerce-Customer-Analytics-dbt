@@ -4,7 +4,6 @@ with orders as (
 ),
 
 today_logic as (
-    -- In ETL.py: now = df['InvoiceDate'].max() + 1 day
     select max(invoice_date) + interval '1 day' as today_date
     from orders
 ),
