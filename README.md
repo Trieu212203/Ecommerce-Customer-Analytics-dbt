@@ -1,10 +1,10 @@
-# 🛒 E-Commerce Customer Analytics
+# E-Commerce Customer Analytics
 
 End-to-end data pipeline for analyzing e-commerce transactions and customer behavior using **dbt** and **PostgreSQL**, delivering business-ready data for Power BI dashboards.
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
 * Customer segmentation using RFM (Recency, Frequency, Monetary)
 * Revenue and sales trend analysis
@@ -12,13 +12,13 @@ End-to-end data pipeline for analyzing e-commerce transactions and customer beha
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 Raw CSV → Python → PostgreSQL → dbt (Staging → Mart) → Power BI
 
 ---
 
-## 📊 Data Modeling
+## Data Modeling
 
 **Star Schema**
 
@@ -37,7 +37,7 @@ Raw CSV → Python → PostgreSQL → dbt (Staging → Mart) → Power BI
 
 ---
 
-## 🏛️ Data Layers (Medallion)
+## Data Layers (Medallion)
 
 * **Bronze**: Raw CSV → PostgreSQL (`raw`)
 * **Silver**: Clean & standardize (`stg_online_retail__orders`)
@@ -76,7 +76,7 @@ Ecommerce-Customer-Analytics-dbt/
 ├── docker-compose.yml   # Docker services (Postgres)
 ```
 
-## 🔗 Data Lineage
+## Data Lineage
 
 ```mermaid
 graph LR
@@ -150,7 +150,7 @@ graph LR
 
 ---
 
-## 📊 Dashboard (Power BI)
+## Dashboard (Power BI)
 
 *In progress*
 
@@ -163,7 +163,7 @@ Planned:
 
 ---
 
-## 💡 Insights
+## Insights
 
 Planned:
 
