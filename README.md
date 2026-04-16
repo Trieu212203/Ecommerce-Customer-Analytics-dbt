@@ -11,7 +11,11 @@
   <img src="https://img.shields.io/badge/Python-ELT%20Ingestion-3776AB" alt="Python">
 </p>
 
+<<<<<<< HEAD
 ## Overview
+=======
+## Objectives
+>>>>>>> bfd2b561702f20ae7df9e6b32c8318d8e5b27e6c
 
 This project turns raw e-commerce transaction data into analytics-ready models for reporting and decision-making. It covers the full analytics workflow:
 
@@ -21,20 +25,29 @@ This project turns raw e-commerce transaction data into analytics-ready models f
 - build business-facing marts for sales, customer, product, and geographic analysis
 - connect the transformed data to Power BI for dashboarding
 
+<<<<<<< HEAD
 The result is a compact but practical analytics stack that demonstrates data ingestion, warehouse modeling, metric design, and dashboard delivery in one project.
+=======
+## Architecture
+>>>>>>> bfd2b561702f20ae7df9e6b32c8318d8e5b27e6c
 
 ## Business Questions
 
 This project is designed to answer questions such as:
 
+<<<<<<< HEAD
 - How is revenue trending month over month?
 - Which customer segments generate the most value?
 - Which products contribute the most revenue?
 - Which countries drive the strongest sales performance?
 - How do order volume, customer count, and average order value move together?
+=======
+## Data Modeling
+>>>>>>> bfd2b561702f20ae7df9e6b32c8318d8e5b27e6c
 
 ## Solution Architecture
 
+<<<<<<< HEAD
 ```text
 Excel Source
    |
@@ -52,6 +65,33 @@ dbt Mart Layer
    |
    v
 Power BI Dashboard
+=======
+* **fact_sales** – transactional data (order-line level)
+* **dim_customer** – customer + RFM segmentation
+* **dim_product**, **dim_date**, **dim_country**
+
+**Analytics Tables**
+
+* `customer_segment_metrics`
+* `daily_sales_performance`
+* `product_performance_metrics`
+* `geographic_sales_metrics`
+
+> Optimized for direct use in BI tools.
+
+---
+
+## Data Layers (Medallion)
+
+* **Bronze**: Raw CSV → PostgreSQL (`raw`)
+* **Silver**: Clean & standardize (`stg_online_retail__orders`)
+* **Gold**: Star schema + business metrics (`marts`)
+
+---
+## Architecture
+
+text
+>>>>>>> bfd2b561702f20ae7df9e6b32c8318d8e5b27e6c
 ```
 
 Pipeline flow:
@@ -104,6 +144,7 @@ Ecommerce-Customer-Analytics-dbt/
 `-- requirements.txt
 ```
 
+<<<<<<< HEAD
 ## Data Modeling
 
 ### Staging Layer
@@ -139,6 +180,9 @@ These models are built for direct BI use:
 - `geographic_sales_metrics`: country-level sales contribution and revenue share
 
 ## Star Schema
+=======
+## Data Lineage
+>>>>>>> bfd2b561702f20ae7df9e6b32c8318d8e5b27e6c
 
 ```mermaid
 graph TD
@@ -158,7 +202,11 @@ graph TD
 
 ## Metrics and Business Logic
 
+<<<<<<< HEAD
 ### Customer Segmentation
+=======
+## Dashboard (Power BI)
+>>>>>>> bfd2b561702f20ae7df9e6b32c8318d8e5b27e6c
 
 `dim_customer` implements an RFM-style framework:
 
@@ -173,7 +221,11 @@ Current output segments:
 - `At Risk`
 - `General`
 
+<<<<<<< HEAD
 ### KPI Coverage
+=======
+## Insights
+>>>>>>> bfd2b561702f20ae7df9e6b32c8318d8e5b27e6c
 
 The marts support dashboard KPIs such as:
 
