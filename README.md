@@ -68,19 +68,73 @@ Analytics marts:
 ## Data Lineage
 
 ```mermaid
-graph TD
-    A[stg_online_retail__orders] --> B[fact_sales]
-    A --> C[dim_customer]
-    A --> D[dim_product]
-    A --> E[dim_date]
-    A --> F[dim_country]
+graph LR
+    %% ======================
+    %% Bronze Layer
+    %% ======================
+    subgraph Bronze [RAW Layer]
+        A[(raw.online_retail_data)]
+    end
 
-    B --> G[monthly_sales_performance]
-    B --> H[product_performance_metrics]
-    B --> I[geographic_sales_metrics]
-    B --> J[customer_segment_metrics]
-    C --> J
-    D --> H
+    %% ======================
+    %% Silver Layer
+    %% ======================
+    subgraph Silver [STAGING Layer]
+        B[[stg_online_retail__orders]]
+        A --> B
+    end
+
+    %% ======================
+    %% Gold - Core
+    %% ======================
+    subgraph Gold_Core [MARTS - Core]
+        C[[dim_customer]]
+        D[[dim_date]]
+        E[[dim_product]]
+        F[[dim_country]]
+        G[[fact_sales]]
+
+        B --> C
+        B --> D
+        B --> E
+        B --> F
+        B --> G
+    end
+
+    %% ======================
+    %% Gold - Analytics
+    %% ======================
+    subgraph Gold_Analytics [MARTS - Analytics]
+        H[[customer_segment_mtrcs ]]
+        I[[monthly_sales_performance ]]
+        J[[product_performance_mtrcs]]
+        K[[geographic_sales_mtrcs ]]
+
+        %% dependencies
+        C --> H
+        G --> H
+
+        D --> I
+        G --> I
+
+        E --> J
+        G --> J
+
+        F --> K
+        G --> K
+    end
+
+    %% ======================
+    %% Styling
+    %% ======================
+    classDef raw fill:#cd7f32,stroke:#333,stroke-width:2px,color:#fff;
+    classDef stg fill:#c0c0c0,stroke:#333,stroke-width:2px,color:#111;
+    classDef mart fill:#ffd700,stroke:#333,stroke-width:2px,color:#111;
+
+    class A raw;
+    class B stg;
+    class C,D,E,F,G mart;
+    class H,I,J,K mart;
 ```
 
 ## How to Run
