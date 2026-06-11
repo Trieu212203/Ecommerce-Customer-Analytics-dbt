@@ -26,7 +26,7 @@ Technical goals:
 ## Pipeline
 
 ```text
-Excel -> Python ingestion -> PostgreSQL raw -> dbt staging -> dbt marts -> Power BI
+CSV -> Python ingestion -> PostgreSQL raw -> dbt staging -> dbt marts -> Power BI
 ```
 
 Data flow:
