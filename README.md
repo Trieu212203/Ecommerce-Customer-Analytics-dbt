@@ -23,6 +23,11 @@ Technical goals:
 - create marts for sales, customer, product, and geography analysis
 - connect the final models to Power BI
 
+
+## Dashboard preview
+![Overview](bi/visual.png)
+
+
 ## Pipeline
 
 ```text
