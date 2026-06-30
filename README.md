@@ -25,7 +25,7 @@ Technical goals:
 
 
 ## Dashboard preview
-![Overview](bi/visual.png)
+![Overview](bi/visual.jpg)
 
 
 ## Pipeline
